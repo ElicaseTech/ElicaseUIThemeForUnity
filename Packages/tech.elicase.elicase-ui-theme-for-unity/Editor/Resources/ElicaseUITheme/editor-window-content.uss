@@ -1,0 +1,68 @@
+.elicase-window-content {
+    background-color: var(--elicase-color-background);
+    color: var(--elicase-color-on-surface);
+}
+
+.elicase-window-content.elicase-style-material .unity-toolbar,
+.elicase-window-content.elicase-style-material .unity-toolbar-container {
+    background-color: var(--elicase-color-surface-variant);
+    border-bottom-color: var(--elicase-color-outline);
+    border-bottom-width: 1px;
+    min-height: 36px;
+}
+
+.elicase-window-content.elicase-style-material .unity-collection-view__item,
+.elicase-window-content.elicase-style-material .unity-list-view__item,
+.elicase-window-content.elicase-style-material .unity-tree-view__item {
+    border-bottom-color: transparent;
+    border-radius: var(--elicase-radius-small);
+    color: var(--elicase-color-on-surface);
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.elicase-window-content.elicase-style-material .unity-collection-view__item:hover,
+.elicase-window-content.elicase-style-material .unity-list-view__item:hover,
+.elicase-window-content.elicase-style-material .unity-tree-view__item:hover {
+    background-color: var(--elicase-color-state-hover);
+}
+
+.elicase-window-content.elicase-style-material .unity-collection-view__item--selected,
+.elicase-window-content.elicase-style-material .unity-list-view__item--selected,
+.elicase-window-content.elicase-style-material .unity-tree-view__item--selected {
+    background-color: var(--elicase-color-state-focus);
+    color: var(--elicase-color-on-surface);
+}
+
+.elicase-window-content.elicase-style-material .unity-foldout,
+.elicase-window-content.elicase-style-material .unity-base-field {
+    margin-left: var(--elicase-space-1);
+    margin-right: var(--elicase-space-1);
+}
+
+.elicase-window-content.elicase-style-material .unity-base-field__input,
+.elicase-window-content.elicase-style-material .unity-base-text-field__input {
+    background-color: var(--elicase-color-surface);
+    border-color: var(--elicase-color-outline);
+    border-radius: var(--elicase-radius-small);
+    color: var(--elicase-color-on-surface);
+}
+
+.elicase-window-content.elicase-style-material .unity-base-field__input:focus,
+.elicase-window-content.elicase-style-material .unity-base-text-field__input:focus {
+    border-color: var(--elicase-color-primary);
+}
+
+.elicase-window-content.elicase-style-material .unity-scroller,
+.elicase-window-content.elicase-style-material .unity-scroll-view__vertical-scroller,
+.elicase-window-content.elicase-style-material .unity-scroll-view__horizontal-scroller {
+    background-color: var(--elicase-color-surface-variant);
+}
+
+.elicase-window-content.elicase-style-unity-original .unity-collection-view__item,
+.elicase-window-content.elicase-style-unity-original .unity-list-view__item,
+.elicase-window-content.elicase-style-unity-original .unity-tree-view__item,
+.elicase-window-content.elicase-style-unity-original .unity-base-field__input,
+.elicase-window-content.elicase-style-unity-original .unity-base-text-field__input {
+    border-radius: 0;
+}

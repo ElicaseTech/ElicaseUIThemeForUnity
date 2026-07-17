@@ -1,0 +1,40 @@
+.elicase-ui {
+    --elicase-font-size-body: 13px;
+    --elicase-font-size-label: 12px;
+    --elicase-font-size-title: 15px;
+    --elicase-radius-small: 4px;
+    --elicase-radius-medium: 8px;
+    --elicase-radius-large: 12px;
+    --elicase-space-1: 4px;
+    --elicase-space-2: 8px;
+    --elicase-space-3: 12px;
+    --elicase-space-4: 16px;
+}
+
+.elicase-theme-dark {
+    --elicase-color-background: #1e1e1e;
+    --elicase-color-surface: #2a2a2a;
+    --elicase-color-surface-variant: #3a3a3a;
+    --elicase-color-outline: #555555;
+    --elicase-color-primary: #4c9eff;
+    --elicase-color-on-surface: #dcdcdc;
+    --elicase-color-on-primary: #ffffff;
+    --elicase-color-error: #f05d5e;
+    --elicase-color-state-hover: rgba(255, 255, 255, 0.08);
+    --elicase-color-state-pressed: rgba(255, 255, 255, 0.12);
+    --elicase-color-state-focus: rgba(76, 158, 255, 0.22);
+}
+
+.elicase-theme-light {
+    --elicase-color-background: #cfcfcf;
+    --elicase-color-surface: #e5e5e5;
+    --elicase-color-surface-variant: #dadada;
+    --elicase-color-outline: #a5a5a5;
+    --elicase-color-primary: #006fc9;
+    --elicase-color-on-surface: #202020;
+    --elicase-color-on-primary: #ffffff;
+    --elicase-color-error: #b3261e;
+    --elicase-color-state-hover: rgba(0, 0, 0, 0.08);
+    --elicase-color-state-pressed: rgba(0, 0, 0, 0.12);
+    --elicase-color-state-focus: rgba(0, 111, 201, 0.18);
+}

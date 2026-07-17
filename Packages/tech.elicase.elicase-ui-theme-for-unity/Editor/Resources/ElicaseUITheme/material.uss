@@ -1,0 +1,23 @@
+.elicase-style-material .elicase-panel,
+.elicase-style-material .elicase-dialog,
+.elicase-style-material .elicase-plugin-host {
+    border-radius: var(--elicase-radius-medium);
+}
+
+.elicase-style-material .elicase-button,
+.elicase-style-material .elicase-icon-button {
+    border-radius: var(--elicase-radius-large);
+}
+
+.elicase-style-material .elicase-text-field TextInput,
+.elicase-style-material .elicase-select .unity-base-field__input {
+    border-radius: var(--elicase-radius-small);
+}
+
+.elicase-style-material .elicase-tab {
+    border-radius: var(--elicase-radius-medium);
+}
+
+.elicase-style-material .elicase-list-row {
+    border-radius: var(--elicase-radius-small);
+}

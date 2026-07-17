@@ -1,0 +1,144 @@
+.elicase-ui {
+    background-color: var(--elicase-color-background);
+    color: var(--elicase-color-on-surface);
+    font-size: var(--elicase-font-size-body);
+}
+
+.elicase-panel,
+.elicase-dialog,
+.elicase-plugin-host {
+    background-color: var(--elicase-color-surface);
+    border-color: var(--elicase-color-outline);
+    border-width: 1px;
+    padding: var(--elicase-space-3);
+    margin: var(--elicase-space-2);
+}
+
+.elicase-toolbar,
+.elicase-plugin-toolbar {
+    background-color: var(--elicase-color-surface-variant);
+    border-bottom-color: var(--elicase-color-outline);
+    border-bottom-width: 1px;
+    min-height: 36px;
+    padding-left: var(--elicase-space-2);
+    padding-right: var(--elicase-space-2);
+    align-items: center;
+    flex-direction: row;
+}
+
+.elicase-button {
+    min-height: 32px;
+    padding-left: var(--elicase-space-3);
+    padding-right: var(--elicase-space-3);
+    margin: 2px;
+    color: var(--elicase-color-primary);
+    background-color: transparent;
+    border-color: transparent;
+    unity-font-style: bold;
+}
+
+.elicase-button:hover {
+    background-color: var(--elicase-color-state-hover);
+}
+
+.elicase-button:active {
+    background-color: var(--elicase-color-state-pressed);
+}
+
+.elicase-button:focus {
+    border-color: var(--elicase-color-primary);
+}
+
+.elicase-icon-button {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.elicase-text-field,
+.elicase-toggle,
+.elicase-select {
+    margin-top: var(--elicase-space-1);
+    margin-bottom: var(--elicase-space-1);
+}
+
+.elicase-error {
+    border-color: var(--elicase-color-error);
+}
+
+.elicase-tabs {
+    flex-grow: 1;
+}
+
+.elicase-tab-bar {
+    flex-direction: row;
+    background-color: var(--elicase-color-surface);
+    border-bottom-color: var(--elicase-color-outline);
+    border-bottom-width: 1px;
+}
+
+.elicase-tab {
+    min-height: 36px;
+    padding-left: var(--elicase-space-4);
+    padding-right: var(--elicase-space-4);
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--elicase-color-on-surface);
+}
+
+.elicase-tab-selected {
+    color: var(--elicase-color-primary);
+    border-bottom-color: var(--elicase-color-primary);
+    border-bottom-width: 2px;
+}
+
+.elicase-tab-content {
+    flex-grow: 1;
+}
+
+.elicase-list-row {
+    min-height: 32px;
+    padding: var(--elicase-space-2);
+    border-bottom-color: var(--elicase-color-outline);
+    border-bottom-width: 1px;
+}
+
+.elicase-list-row:hover {
+    background-color: var(--elicase-color-state-hover);
+}
+
+.elicase-list-row-selected {
+    background-color: var(--elicase-color-state-focus);
+}
+
+.elicase-dialog-header {
+    unity-font-style: bold;
+    font-size: var(--elicase-font-size-title);
+    margin-bottom: var(--elicase-space-2);
+}
+
+.elicase-dialog-body {
+    flex-grow: 1;
+}
+
+.elicase-dialog-footer {
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: var(--elicase-space-3);
+}
+
+.elicase-plugin-content {
+    flex-grow: 1;
+}
+
+.elicase-plugin-dialog-layer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: none;
+}

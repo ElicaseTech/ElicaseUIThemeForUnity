@@ -1,0 +1,19 @@
+.elicase-style-unity-original .elicase-panel,
+.elicase-style-unity-original .elicase-dialog,
+.elicase-style-unity-original .elicase-plugin-host {
+    border-radius: 0;
+}
+
+.elicase-style-unity-original .elicase-button,
+.elicase-style-unity-original .elicase-icon-button,
+.elicase-style-unity-original .elicase-tab,
+.elicase-style-unity-original .elicase-list-row {
+    border-radius: 0;
+}
+
+.elicase-style-unity-original .elicase-button {
+    background-color: var(--elicase-color-surface-variant);
+    color: var(--elicase-color-on-surface);
+    border-color: var(--elicase-color-outline);
+    unity-font-style: normal;
+}

@@ -1,5 +1,6 @@
 {
-    "name": "VRChatPackageTemplate.Editor",
+    "name": "Tech.Elicase.UITheme.Editor",
+    "rootNamespace": "Tech.Elicase.UITheme.Editor",
     "references": [],
     "includePlatforms": [
         "Editor"
