@@ -86,12 +86,6 @@ namespace Tech.Elicase.UITheme.Editor
 
         private static void Refresh(ElicaseThemeContext theme, bool notifyThemeChanged)
         {
-            if (!ElicaseThemeSettings.Current.BuiltInWindowThemingEnabled)
-            {
-                DetachAll();
-                return;
-            }
-
             var activeWindowIds = new HashSet<int>();
             foreach (var window in Resources.FindObjectsOfTypeAll<EditorWindow>())
             {
@@ -122,12 +116,17 @@ namespace Tech.Elicase.UITheme.Editor
                     attachment = CreateAttachment(window, root, kind, theme);
                     attachments[windowId] = attachment;
                 }
-                else
+                else if (ElicaseThemeSettings.Current.BuiltInWindowThemingEnabled)
                 {
                     ElicaseThemeManager.ApplyWindowContent(window, theme);
                 }
+                else
+                {
+                    ElicaseThemeManager.RemoveWindowContent(window);
+                }
 
                 SynchronizeExtensions(attachment, theme, notifyThemeChanged);
+                SynchronizeObservers(attachment, theme);
             }
 
             var staleWindowIds = new List<int>();
@@ -151,7 +150,10 @@ namespace Tech.Elicase.UITheme.Editor
             ElicaseEditorWindowKind kind,
             ElicaseThemeContext theme)
         {
-            ElicaseThemeManager.ApplyWindowContent(window, theme);
+            if (ElicaseThemeSettings.Current.BuiltInWindowThemingEnabled)
+            {
+                ElicaseThemeManager.ApplyWindowContent(window, theme);
+            }
 
             return new WindowAttachment(window, root, kind);
         }
@@ -161,7 +163,8 @@ namespace Tech.Elicase.UITheme.Editor
             ElicaseThemeContext theme,
             bool notifyThemeChanged)
         {
-            var shouldAttachExtensions = ElicaseThemeSettings.Current.PluginExtensionsEnabled;
+            var shouldAttachExtensions = ElicaseThemeSettings.Current.BuiltInWindowThemingEnabled
+                && ElicaseThemeSettings.Current.PluginExtensionsEnabled;
             var registeredExtensions = new List<IElicaseEditorWindowExtension>(
                 ElicaseEditorWindowExtensions.RegisteredExtensions);
 
@@ -199,11 +202,54 @@ namespace Tech.Elicase.UITheme.Editor
             }
         }
 
+        private static void SynchronizeObservers(WindowAttachment attachment, ElicaseThemeContext theme)
+        {
+            var registeredObservers = new List<IElicaseEditorWindowObserver>(
+                ElicaseEditorWindowObservers.RegisteredObservers);
+            var attachedObservers = new List<IElicaseEditorWindowObserver>(attachment.Observers);
+            foreach (var observer in attachedObservers)
+            {
+                if (!Contains(registeredObservers, observer) || !Supports(observer, attachment.Kind))
+                {
+                    DetachObserver(attachment, observer, theme);
+                }
+            }
+
+            foreach (var observer in registeredObservers)
+            {
+                if (!Supports(observer, attachment.Kind))
+                {
+                    continue;
+                }
+
+                if (!attachment.Observers.Contains(observer))
+                {
+                    observer.OnAttach(CreateContext(attachment, theme));
+                    attachment.Observers.Add(observer);
+                }
+
+                observer.OnRefresh(CreateContext(attachment, theme));
+            }
+        }
+
         private static bool Contains(IReadOnlyList<IElicaseEditorWindowExtension> extensions, IElicaseEditorWindowExtension extension)
         {
             foreach (var registeredExtension in extensions)
             {
                 if (ReferenceEquals(registeredExtension, extension))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool Contains(IReadOnlyList<IElicaseEditorWindowObserver> observers, IElicaseEditorWindowObserver observer)
+        {
+            foreach (var registeredObserver in observers)
+            {
+                if (ReferenceEquals(registeredObserver, observer))
                 {
                     return true;
                 }
@@ -220,6 +266,24 @@ namespace Tech.Elicase.UITheme.Editor
             }
 
             foreach (var target in extension.TargetWindows)
+            {
+                if (target == kind)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool Supports(IElicaseEditorWindowObserver observer, ElicaseEditorWindowKind kind)
+        {
+            if (observer.TargetWindows == null)
+            {
+                return false;
+            }
+
+            foreach (var target in observer.TargetWindows)
             {
                 if (target == kind)
                 {
@@ -248,6 +312,12 @@ namespace Tech.Elicase.UITheme.Editor
                 DetachExtension(attachment, extension, theme);
             }
 
+            var observers = new List<IElicaseEditorWindowObserver>(attachment.Observers);
+            foreach (var observer in observers)
+            {
+                DetachObserver(attachment, observer, theme);
+            }
+
             attachment.Dispose();
             ElicaseThemeManager.RemoveWindowContent(attachment.Root);
             attachments.Remove(windowId);
@@ -262,6 +332,15 @@ namespace Tech.Elicase.UITheme.Editor
             attachment.Extensions.Remove(extension);
         }
 
+        private static void DetachObserver(
+            WindowAttachment attachment,
+            IElicaseEditorWindowObserver observer,
+            ElicaseThemeContext theme)
+        {
+            observer.OnDetach(CreateContext(attachment, theme));
+            attachment.Observers.Remove(observer);
+        }
+
         private static ElicaseEditorWindowContext CreateContext(WindowAttachment attachment, ElicaseThemeContext theme)
         {
             return new ElicaseEditorWindowContext(attachment.Kind, attachment.Window, attachment.Root, theme);
@@ -274,6 +353,8 @@ namespace Tech.Elicase.UITheme.Editor
             public ElicaseEditorWindowKind Kind { get; }
             public List<IElicaseEditorWindowExtension> Extensions { get; } =
                 new List<IElicaseEditorWindowExtension>();
+            public List<IElicaseEditorWindowObserver> Observers { get; } =
+                new List<IElicaseEditorWindowObserver>();
 
             private readonly EventCallback<AttachToPanelEvent> attachToPanelCallback;
             private readonly EventCallback<DetachFromPanelEvent> detachFromPanelCallback;

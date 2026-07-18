@@ -1,7 +1,7 @@
 {
   "name": "tech.elicase.elicase-ui-theme-for-unity",
   "displayName": "Elicase UI Theme for Unity",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "unity": "2022.3",
   "description": "Editor UI Toolkit theme foundation for Unity using Material Design 3 with Unity-original style fallback.",
   "keywords": [

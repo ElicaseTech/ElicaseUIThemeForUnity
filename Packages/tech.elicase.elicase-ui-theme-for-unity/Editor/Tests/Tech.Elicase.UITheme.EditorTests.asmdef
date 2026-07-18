@@ -1,0 +1,15 @@
+{
+  "name": "Tech.Elicase.UITheme.EditorTests",
+  "rootNamespace": "Tech.Elicase.UITheme.Editor.Tests",
+  "references": [
+    "Tech.Elicase.UITheme.Editor",
+    "UnityEditor.TestRunner",
+    "UnityEngine.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}
