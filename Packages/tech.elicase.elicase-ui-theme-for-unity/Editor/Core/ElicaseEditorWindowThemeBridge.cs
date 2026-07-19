@@ -127,6 +127,10 @@ namespace Tech.Elicase.UITheme.Editor
 
                 SynchronizeExtensions(attachment, theme, notifyThemeChanged);
                 SynchronizeObservers(attachment, theme);
+                if (kind == ElicaseEditorWindowKind.Inspector)
+                {
+                    ElicaseInspectorHeaderRenderer.ApplyToInspector(root);
+                }
             }
 
             var staleWindowIds = new List<int>();
@@ -319,6 +323,10 @@ namespace Tech.Elicase.UITheme.Editor
             }
 
             attachment.Dispose();
+            if (attachment.Kind == ElicaseEditorWindowKind.Inspector)
+            {
+                ElicaseInspectorHeaderRenderer.Restore(attachment.Root);
+            }
             ElicaseThemeManager.RemoveWindowContent(attachment.Root);
             attachments.Remove(windowId);
         }
