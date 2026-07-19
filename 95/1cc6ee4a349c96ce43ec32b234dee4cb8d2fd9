@@ -1,0 +1,19 @@
+Packages/tech.elicase.elicase-ui-theme-for-unity/package.json
+  s_484147a116d510::t_437fde4059991b 4,17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "951cc6ee4a349c96ce43ec32b234dee4cb8d2fd9",
+  "prompts": {},
+  "sessions": {
+    "s_484147a116d510": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f6fee-53c5-7923-a067-c7025d534908",
+        "model": "unknown"
+      },
+      "human_author": "AuraElicase <auraelicase@outlook.com>"
+    }
+  }
+}
