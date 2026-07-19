@@ -1,0 +1,21 @@
+Packages/tech.elicase.elicase-ui-theme-for-unity/Editor/Core/ElicaseEditorWindowThemeBridge.cs
+  s_484147a116d510::t_ff8da5e6851b0b 130-133,326-329
+Packages/tech.elicase.elicase-ui-theme-for-unity/package.json
+  s_484147a116d510::t_e3bd58cb976629 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "7148ed93cca344656fe930c7395127a1a2cca762",
+  "prompts": {},
+  "sessions": {
+    "s_484147a116d510": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f6fee-53c5-7923-a067-c7025d534908",
+        "model": "unknown"
+      },
+      "human_author": "AuraElicase <auraelicase@outlook.com>"
+    }
+  }
+}
