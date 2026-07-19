@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -9,14 +10,16 @@ namespace Tech.Elicase.UITheme.Editor
     [InitializeOnLoad]
     public static class ElicaseInspectorHeaderRenderer
     {
-        private const float TitleLeftInset = 44f;
+        private const float TitleLeftInsetWithoutEnabledToggle = 44f;
+        private const float TitleLeftInsetWithEnabledToggle = 56f;
         private const float TitleRightInset = 72f;
-        private const float TitleVerticalInset = 6f;
+        private const float TitleVerticalInset = 2f;
 
         private static readonly Dictionary<TextElement, TrackedTitle> trackedTitles =
             new Dictionary<TextElement, TrackedTitle>();
         private static readonly Dictionary<IMGUIContainer, TrackedImGuiHeader> trackedImGuiHeaders =
             new Dictionary<IMGUIContainer, TrackedImGuiHeader>();
+        private static GUIStyle componentTitleStyle;
 
         static ElicaseInspectorHeaderRenderer()
         {
@@ -50,7 +53,7 @@ namespace Tech.Elicase.UITheme.Editor
             }
 
             var headerRect = GUILayoutUtility.GetLastRect();
-            DrawTitle(headerRect, title);
+            DrawTitle(headerRect, title, HasEnabledToggle(component));
         }
 
         internal static void ApplyToInspector(VisualElement root)
@@ -193,7 +196,11 @@ namespace Tech.Elicase.UITheme.Editor
             TrackedImGuiHeader tracked;
             if (!trackedImGuiHeaders.TryGetValue(header, out tracked))
             {
-                tracked = new TrackedImGuiHeader(header.onGUIHandler) { Title = title };
+                tracked = new TrackedImGuiHeader(header.onGUIHandler)
+                {
+                    Title = title,
+                    HasEnabledToggle = HasEnabledToggle(sourceTitle)
+                };
                 trackedImGuiHeaders.Add(header, tracked);
                 tracked.Apply(header);
                 header.MarkDirtyRepaint();
@@ -206,12 +213,14 @@ namespace Tech.Elicase.UITheme.Editor
                     header.MarkDirtyRepaint();
                 }
 
-                if (tracked.Title == title)
+                var hasEnabledToggle = HasEnabledToggle(sourceTitle);
+                if (tracked.Title == title && tracked.HasEnabledToggle == hasEnabledToggle)
                 {
                     return;
                 }
 
                 tracked.Title = title;
+                tracked.HasEnabledToggle = hasEnabledToggle;
                 header.MarkDirtyRepaint();
             }
         }
@@ -267,17 +276,20 @@ namespace Tech.Elicase.UITheme.Editor
             }
         }
 
-        private static void DrawImGuiTitle(string title)
+        private static void DrawImGuiTitle(string title, bool hasEnabledToggle)
         {
-            DrawTitle(GUILayoutUtility.GetLastRect(), title);
+            DrawTitle(GUILayoutUtility.GetLastRect(), title, hasEnabledToggle);
         }
 
-        private static void DrawTitle(Rect headerRect, string title)
+        private static void DrawTitle(Rect headerRect, string title, bool hasEnabledToggle)
         {
+            var titleLeftInset = hasEnabledToggle
+                ? TitleLeftInsetWithEnabledToggle
+                : TitleLeftInsetWithoutEnabledToggle;
             var titleRect = new Rect(
-                headerRect.x + TitleLeftInset,
+                headerRect.x + titleLeftInset,
                 headerRect.y + TitleVerticalInset,
-                Mathf.Max(0f, headerRect.width - TitleLeftInset - TitleRightInset),
+                Mathf.Max(0f, headerRect.width - titleLeftInset - TitleRightInset),
                 Mathf.Min(EditorGUIUtility.singleLineHeight, Mathf.Max(0f, headerRect.height - TitleVerticalInset)));
             if (titleRect.width <= 0f || titleRect.height <= 0f)
             {
@@ -291,8 +303,55 @@ namespace Tech.Elicase.UITheme.Editor
             var originalContentColor = GUI.contentColor;
             EditorGUI.DrawRect(titleRect, background);
             GUI.contentColor = theme.IsDark ? Color.white : Color.black;
-            GUI.Label(titleRect, title, EditorStyles.boldLabel);
+            GUI.Label(titleRect, title, GetComponentTitleStyle());
             GUI.contentColor = originalContentColor;
+        }
+
+        private static GUIStyle GetComponentTitleStyle()
+        {
+            if (componentTitleStyle == null)
+            {
+                componentTitleStyle = new GUIStyle(EditorStyles.boldLabel)
+                {
+                    alignment = TextAnchor.MiddleLeft
+                };
+            }
+
+            return componentTitleStyle;
+        }
+
+        private static bool HasEnabledToggle(string sourceTitle)
+        {
+            if (string.IsNullOrEmpty(sourceTitle))
+            {
+                return false;
+            }
+
+            foreach (var gameObject in Selection.gameObjects)
+            {
+                if (gameObject == null)
+                {
+                    continue;
+                }
+
+                foreach (var component in gameObject.GetComponents<Component>())
+                {
+                    if (component != null
+                        && ObjectNames.NicifyVariableName(component.GetType().Name) == sourceTitle)
+                    {
+                        return HasEnabledToggle(component);
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static bool HasEnabledToggle(Component component)
+        {
+            return component != null
+                   && component.GetType().GetProperty("enabled", BindingFlags.Instance | BindingFlags.Public)?.PropertyType
+                   == typeof(bool);
         }
 
         private static bool IsComponentHeaderTitle(TextElement element)
@@ -367,6 +426,7 @@ namespace Tech.Elicase.UITheme.Editor
             }
 
             internal string Title { get; set; }
+            internal bool HasEnabledToggle { get; set; }
 
             internal bool IsApplied(IMGUIContainer header)
             {
@@ -379,7 +439,7 @@ namespace Tech.Elicase.UITheme.Editor
                 appliedHandler = () =>
                 {
                     originalHandler?.Invoke();
-                    DrawImGuiTitle(Title);
+                    DrawImGuiTitle(Title, HasEnabledToggle);
                 };
                 header.onGUIHandler = appliedHandler;
             }
